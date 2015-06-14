@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Angular_MVC.Models
+namespace Angular_MVC.Models.View
 {
     public class ManageInfoViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 
-namespace Angular_MVC.Controllers
+namespace Angular_MVC.Controllers.Api
 {
     [Authorize]
     public class ValuesController : ApiController

@@ -1,6 +1,8 @@
+using Angular_MVC.Models;
+
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Angular_MVC.Models
+namespace Angular_MVC.Context
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

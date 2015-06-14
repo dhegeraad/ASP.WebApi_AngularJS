@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Angular_MVC.Models
+namespace Angular_MVC.Models.Binding
 {
     public class RemoveLoginBindingModel
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -8,6 +9,8 @@ using System.Web;
 using System.Web.Http;
 
 using Angular_MVC.Models;
+using Angular_MVC.Models.Binding;
+using Angular_MVC.Models.View;
 using Angular_MVC.Providers;
 using Angular_MVC.Results;
 
@@ -18,7 +21,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 
-namespace Angular_MVC.Controllers
+namespace Angular_MVC.Controllers.Api
 {
     [Authorize]
     [RoutePrefix("api/Account")]
@@ -128,7 +131,7 @@ namespace Angular_MVC.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -261,9 +264,9 @@ namespace Angular_MVC.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -286,7 +289,6 @@ namespace Angular_MVC.Controllers
         public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
-            List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
 
             string state;
 
@@ -300,25 +302,25 @@ namespace Angular_MVC.Controllers
                 state = null;
             }
 
-            foreach (AuthenticationDescription description in descriptions)
-            {
-                ExternalLoginViewModel login = new ExternalLoginViewModel
-                {
-                    Name = description.Caption,
-                    Url = Url.Route("ExternalLogin", new
-                    {
-                        provider = description.AuthenticationType,
-                        response_type = "token",
-                        client_id = Startup.PublicClientId,
-                        redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri,
-                        state = state
-                    }),
-                    State = state
-                };
-                logins.Add(login);
-            }
+            return descriptions.Select(description => ExternalLoginViewModel(returnUrl, description, state)).ToList();
+        }
 
-            return logins;
+        private ExternalLoginViewModel ExternalLoginViewModel(string returnUrl, AuthenticationDescription description, string state)
+        {
+            var login = new ExternalLoginViewModel
+            {
+                Name = description.Caption,
+                Url = Url.Route("ExternalLogin", new
+                {
+                    provider = description.AuthenticationType,
+                    response_type = "token",
+                    client_id = Startup.PublicClientId,
+                    redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri,
+                    state = state
+                }),
+                State = state
+            };
+            return login;
         }
 
         // POST api/Account/Register
@@ -371,7 +373,7 @@ namespace Angular_MVC.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
 
             return Ok();

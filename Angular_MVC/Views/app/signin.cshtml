@@ -4,19 +4,19 @@
 
         <form ng-submit="signIn()" class="row">
             <div class="col-md-3">
-                <div class="row"><input class="form-control margin-top-5" type="text" ng-model="username" placeholder="Username" /></div>
-                <div class="row"><input class="form-control margin-top-5" type="password" ng-model="password" placeholder="Password" /></div>
-                <div class="row"><input class="btn btn-primary margin-top-5" type="submit" value="SignIn" /></div>
+                <div class="row"><input class="form-control" type="text" ng-model="username" placeholder="Username" /></div>
+                <div class="row"><input class="form-control" type="password" ng-model="password" placeholder="Password" /></div>
+                <div class="row"><input class="btn btn-primary" type="submit" value="SignIn" /></div>
             </div>
         </form>
         <div class="row">
             <div class="col-md-3">
-                <ul class="list-group margin-top-5" ng-show="showErrorMessage">
-                    <li class="list-group-item list-group-item-danger" ng-repeat="message in errorMessages">
+                <ul class="list-group" ng-show="showErrorMessage">
+                    <li class="list-group-item" ng-repeat="message in errorMessages">
                         {{message}}
                     </li>
                 </ul>
-                <div class="row alert alert-success margin-top-5" ng-show="showSuccessMessage">{{successMessage}}</div>
+                <div class="row alert alert-success" ng-show="showSuccessMessage">{{successMessage}}</div>
             </div>
         </div>
     </div>

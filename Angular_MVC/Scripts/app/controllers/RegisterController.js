@@ -10,12 +10,12 @@
                 ConfirmPassword: $scope.password2
             };
             $http.post('/api/Account/Register', params)
-            .success(function (data, status, headers, config) {
+            .success(function () {
                 $scope.successMessage = "Registration Complete.  Please check your email for account activation instructions.";
                 $scope.showErrorMessage = false;
                 $scope.showSuccessMessage = true;
             })
-            .error(function (data, status, headers, config) {
+            .error(function (data) {
                 if (angular.isArray(data))
                     $scope.errorMessages = data;
                 else

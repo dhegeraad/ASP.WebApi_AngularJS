@@ -4,14 +4,14 @@
         $scope.message = 'Angular WebApi template';
         $scope.values = [];
         $scope.get = function () {
-            console.log($rootScope.loggedIn)
+            console.log($rootScope.loggedIn);
             if (!$rootScope.loggedIn) {
                 console.log('error');
-                $scope.ErrorMessage = 'Not Authorized, Please Sign In.'
+                $scope.ErrorMessage = 'Not Authorized, Please Sign In.';
                 return;
             }
               $http.get('/api/Values')
-	            .success(function (data, status, headers, config) {
+	            .success(function (data) {
 	                $scope.values = data;
 	                console.log($scope.values);
 	            });

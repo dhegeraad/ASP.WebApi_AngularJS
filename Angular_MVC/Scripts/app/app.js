@@ -12,7 +12,7 @@ app.config(['$provide', '$routeProvider', '$httpProvider', function ($provide, $
     // Ignore Template Request errors if a page that was requested was not found or unauthorized.  The GET operation could still show up in the browser debugger, but it shouldn't show a $compile:tpload error.
     //================================================
     $provide.decorator('$templateRequest', ['$delegate', function ($delegate) {
-        var mySilentProvider = function (tpl, ignoreRequestError) {
+        var mySilentProvider = function (tpl) {
             return $delegate(tpl, true);
         }
         return mySilentProvider;
@@ -66,7 +66,7 @@ app.run(['$rootScope', '$http', '$cookies', '$cookieStore', function ($rootScope
     $rootScope.logout = function () {
 
         $http.post('/api/Account/Logout')
-            .success(function (data, status, headers, config) {
+            .success(function () {
                 $http.defaults.headers.common.Authorization = null;
                 $http.defaults.headers.common.RefreshToken = null;
                 $cookieStore.remove('_Token');
@@ -77,7 +77,7 @@ app.run(['$rootScope', '$http', '$cookies', '$cookieStore', function ($rootScope
             });
     }
 
-    $rootScope.$on('$locationChangeSuccess', function (event) {
+    $rootScope.$on('$locationChangeSuccess', function () {
         if ($http.defaults.headers.common.RefreshToken != null) {
             var params = "grant_type=refresh_token&refresh_token=" + $http.defaults.headers.common.RefreshToken;
             $http({
@@ -86,7 +86,7 @@ app.run(['$rootScope', '$http', '$cookies', '$cookieStore', function ($rootScope
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 data: params
             })
-            .success(function (data, status, headers, config) {
+            .success(function (data) {
                 $http.defaults.headers.common.Authorization = "Bearer " + data.access_token;
                 $http.defaults.headers.common.RefreshToken = data.refresh_token;
 
@@ -94,9 +94,9 @@ app.run(['$rootScope', '$http', '$cookies', '$cookieStore', function ($rootScope
                 $cookieStore.put('_RefreshToken', data.refresh_token);
 
                 $http.get('/api/Account/UserInfo')
-                    .success(function (data, status, headers, config) {
-                        if (data != "null") {
-                            $rootScope.userName = data.Email.replace(/["']{1}/gi, "");
+                    .success(function (userinfoData) {
+                        if (userinfoData != "null") {
+                            $rootScope.userName = userinfoData.Email.replace(/["']{1}/gi, "");
                             $rootScope.loggedIn = true;
                         }
                         else
@@ -105,7 +105,7 @@ app.run(['$rootScope', '$http', '$cookies', '$cookieStore', function ($rootScope
 
 
             })
-            .error(function (data, status, headers, config) {
+            .error(function () {
                 $rootScope.loggedIn = false;
             });
         }

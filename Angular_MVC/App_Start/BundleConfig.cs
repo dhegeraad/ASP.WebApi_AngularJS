@@ -22,8 +22,7 @@ namespace Angular_MVC
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                     "~/Scripts/angular.min.js",
                     "~/Scripts/angular-route.min.js",
-                    "~/Scripts/angular-cookies.min.js"
-                    ));
+                    "~/Scripts/angular-cookies.min.js"));
 
             bundles.Add(new ScriptBundle("~/app").IncludeDirectory("~/Scripts/app", "*.js", true));
 

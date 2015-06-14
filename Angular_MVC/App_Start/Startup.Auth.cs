@@ -1,13 +1,15 @@
 ﻿using System;
 
+using Angular_MVC.Models;
+using Angular_MVC.Providers;
+
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using Owin;
-using Angular_MVC.Providers;
-using Angular_MVC.Models;
 using Microsoft.Owin.Security.Infrastructure;
+using Microsoft.Owin.Security.OAuth;
+
+using Owin;
 
 namespace Angular_MVC
 {
@@ -49,23 +51,23 @@ namespace Angular_MVC
             app.UseOAuthBearerTokens(OAuthOptions);
 
             // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
+            // app.UseMicrosoftAccountAuthentication(
             //    clientId: "",
             //    clientSecret: "");
 
-            //app.UseTwitterAuthentication(
+            // app.UseTwitterAuthentication(
             //    consumerKey: "",
             //    consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
+            // app.UseFacebookAuthentication(
             //    appId: "",
             //    appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
+            // app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            // {
             //    ClientId = "",
             //    ClientSecret = ""
-            //});
+            // });
         }
 
         private static void CreateRefreshToken(AuthenticationTokenCreateContext context)
@@ -77,6 +79,5 @@ namespace Angular_MVC
         {
             context.DeserializeTicket(context.Token);
         }
-
     }
 }
